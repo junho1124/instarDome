@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instarcopy/account_page.dart';
 import 'package:instarcopy/home_page.dart';
 
 class TapPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class _TapPageState extends State<TapPage> {
   List _pages =[
     HomePage(),
     Text('page2'),
-    Text('page3'),
+    AccountPage(),
   ];
 
   @override
