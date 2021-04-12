@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:instarcopy/account_page.dart';
 import 'package:instarcopy/home_page.dart';
 import 'package:instarcopy/search_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TapPage extends StatefulWidget {
+  final FirebaseUser user;
+
+  TapPage(this.user);
+
   @override
   _TapPageState createState() => _TapPageState();
 }
