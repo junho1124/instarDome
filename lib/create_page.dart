@@ -1,9 +1,16 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreatePage extends StatefulWidget {
+  final FirebaseUser user;
+
+  CreatePage(this.user);
+
   @override
   _CreatePageState createState() => _CreatePageState();
 }
@@ -36,7 +43,33 @@ class _CreatePageState extends State<CreatePage> {
       actions: <Widget>[
         IconButton(
             icon: Icon(Icons.send),
-            onPressed: () {},
+            onPressed: () {
+              final firebasStorageRef = FirebaseStorage.instance
+                  .ref()
+                  .child('post')
+                  .child('${DateTime.now().millisecondsSinceEpoch}.png');
+
+              final task = firebasStorageRef.putFile(
+              _image, StorageMetadata(contentType: 'image'));
+
+              task.onComplete.then((value) {
+                var downlodUrl = value.ref.getDownloadURL();
+
+                downlodUrl.then((uri) {
+                  var doc = Firestore.instance.collection('post').document();
+                  doc.setData({
+                    'id': doc.documentID,
+                    'photoUrl': uri.toString(),
+                    'context': textEditingController.text,
+                    'email': widget.user.email,
+                    'displayName': widget.user.displayName,
+                    'userPhotoUrl': widget.user.photoUrl
+                  }).then((value) {
+                    Navigator.pop(context);
+                  });
+                });
+              });
+            },
             )
       ],
     );

@@ -26,8 +26,9 @@ class LoginPage extends StatelessWidget {
             SignInButton(Buttons.Google,
                 onPressed: () {
                   _handleSignIn().then((user) {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => TapPage(user)));
+                    print(user);
+                    // Navigator.pushReplacement(context,
+                    //     MaterialPageRoute(builder: (context) => TapPage(user)));
               });
             })
           ],

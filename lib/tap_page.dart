@@ -16,11 +16,17 @@ class TapPage extends StatefulWidget {
 class _TapPageState extends State<TapPage> {
   int _selectedIndex = 0;
 
-  List _pages =[
-    HomePage(),
-    SearchPage(),
-    AccountPage(),
-  ];
+  List _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+    HomePage(widget.user),
+    SearchPage(widget.user),
+    AccountPage(widget.user),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
