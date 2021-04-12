@@ -60,7 +60,7 @@ class _CreatePageState extends State<CreatePage> {
                   doc.setData({
                     'id': doc.documentID,
                     'photoUrl': uri.toString(),
-                    'context': textEditingController.text,
+                    'contents': textEditingController.text,
                     'email': widget.user.email,
                     'displayName': widget.user.displayName,
                     'userPhotoUrl': widget.user.photoUrl

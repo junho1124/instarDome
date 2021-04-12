@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instarcopy/create_page.dart';
+import 'package:instarcopy/detail_post_page.dart';
 
 class SearchPage extends StatefulWidget {
   final FirebaseUser user;
@@ -29,21 +31,46 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildBody() {
-    return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-            mainAxisSpacing: 1.0,
-            crossAxisSpacing: 1.0),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return _buildListItem(context, index);
+    return StreamBuilder(
+      stream: Firestore.instance.collection('post').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
         }
+
+        var items = snapshot.data?.documents ?? [];
+
+        return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                mainAxisSpacing: 1.0,
+                crossAxisSpacing: 1.0),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return _buildListItem(context, items[index]);
+            }
+        );
+      },
+
     );
   }
 
-  Widget _buildListItem(BuildContext context, int index) {
-    return Image.network('https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99FFEF3359CDF88A1A',
-    fit: BoxFit.cover,);
+  Widget _buildListItem(context, document) {
+    return Hero(
+      tag: document['photoUrl'],
+      child: Material(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return DetailPostPage(document);
+            }));
+          },
+          child: Image.network(
+          document['photoUrl'],
+          fit: BoxFit.cover),
+        ),
+      ),
+    );
   }
 }
