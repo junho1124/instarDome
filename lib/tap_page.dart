@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instarcopy/home_page.dart';
 
 class TapPage extends StatefulWidget {
   @override
@@ -9,7 +10,7 @@ class _TapPageState extends State<TapPage> {
   int _selectedIndex = 0;
 
   List _pages =[
-    Text('page1'),
+    HomePage(),
     Text('page2'),
     Text('page3'),
   ];
@@ -19,6 +20,7 @@ class _TapPageState extends State<TapPage> {
     return Scaffold(
       body: Center(child: _pages[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
+        fixedColor: Colors.black,
         onTap: _onItemTapped,
         currentIndex: _selectedIndex,
         items: <BottomNavigationBarItem>[
